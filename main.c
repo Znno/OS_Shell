@@ -104,7 +104,7 @@ void process(int tokencounter,int singleand,char** tokens) {
     else  if(pid > 0) {
         if(!singleand) {
             foregroundgrouppid=pid;
-            setpgid(getpid(),foregroundgrouppid);
+            setpgid(pid,foregroundgrouppid);
             wait(NULL);
             foregroundgrouppid=0;
         }
@@ -212,7 +212,7 @@ void process_doubleand( char **tokens) {
 
                 int ret=execvp(temp[0], temp);
                 if(foregroundgrouppid)
-                setpgid(getpid(),foregroundgrouppid);
+                    setpgid(getpid(),foregroundgrouppid);
                 if(ret==-1) {
                     perror("execvp");
                     exit(1);
@@ -222,7 +222,7 @@ void process_doubleand( char **tokens) {
             else  if(pid > 0) {
 
                     foregroundgrouppid=pid;
-                    setpgid(getpid(),pid);
+                    setpgid(pid,pid);
                     wait(NULL);
 
             }
