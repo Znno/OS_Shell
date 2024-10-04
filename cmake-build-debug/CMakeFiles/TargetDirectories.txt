@@ -1,0 +1,3 @@
+/home/znno/CLionProjects/OSShell/cmake-build-debug/CMakeFiles/OSShell.dir
+/home/znno/CLionProjects/OSShell/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/znno/CLionProjects/OSShell/cmake-build-debug/CMakeFiles/rebuild_cache.dir
