@@ -55,7 +55,7 @@ void reap_background_processes() {
 }
 long long todelete[1000];
 int deletenum=0;
-int foregroundpid=0;
+int foregroundgrouppid=0;
 bool stop=false;
 void Handler(int sig) {
     if(deletenum) {
@@ -65,10 +65,10 @@ void Handler(int sig) {
         }
         deletenum=0;
     }
-    if(foregroundpid) {
+    if(foregroundgrouppid) {
         stop=true;
-        printf("Process %d finished\n",foregroundpid);
-        kill(foregroundpid, SIGKILL);
+        printf("Process %d finished\n",foregroundgrouppid);
+        kill(-foregroundgrouppid, SIGKILL);
     }
 
 
@@ -93,6 +93,8 @@ void process(int tokencounter,int singleand,char** tokens) {
         if(singleand)
             signal(SIGINT,SIG_IGN);
         int ret=execvp(temp[0], temp);
+        if(foregroundgrouppid)
+            setpgid(getpid(),foregroundgrouppid);
         if(ret==-1) {
             perror("execvp");
             exit(1);
@@ -101,9 +103,10 @@ void process(int tokencounter,int singleand,char** tokens) {
     }
     else  if(pid > 0) {
         if(!singleand) {
-            foregroundpid=pid;
+            foregroundgrouppid=pid;
+            setpgid(getpid(),foregroundgrouppid);
             wait(NULL);
-            foregroundpid=0;
+            foregroundgrouppid=0;
         }
 
     }
@@ -208,6 +211,8 @@ void process_doubleand( char **tokens) {
             if(pid == 0) {
 
                 int ret=execvp(temp[0], temp);
+                if(foregroundgrouppid)
+                setpgid(getpid(),foregroundgrouppid);
                 if(ret==-1) {
                     perror("execvp");
                     exit(1);
@@ -216,7 +221,8 @@ void process_doubleand( char **tokens) {
             }
             else  if(pid > 0) {
 
-                    foregroundpid=pid;
+                    foregroundgrouppid=pid;
+                    setpgid(getpid(),pid);
                     wait(NULL);
 
             }
@@ -252,7 +258,7 @@ void process_doubleand( char **tokens) {
         }
         else  if(pid > 0) {
 
-            foregroundpid=pid;
+            foregroundgrouppid=pid;
             wait(NULL);
 
 
@@ -268,7 +274,7 @@ int main(int argc, char* argv[]) {
     int i;
 
     while(1) {
-        foregroundpid = 0;
+        foregroundgrouppid = 0;
         /* BEGIN: TAKING INPUT */
         bzero(line, sizeof(line));
         printf("$ ");
