@@ -224,6 +224,8 @@ void process_doubleand( char **tokens) {
                     foregroundgrouppid=pid;
                     setpgid(pid,pid);
                     wait(NULL);
+                    foregroundgrouppid=0;
+
 
             }
             prev=i+1;
