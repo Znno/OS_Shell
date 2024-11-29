@@ -14,7 +14,7 @@ This project is a custom implementation of a simple Linux shell, designed to exe
 # Dependencies:
 - **Unix-like operating system (Linux)**
 - **GCC compiler (which you can install by running these 2 commands)**
-##### - update the pachkage so you get the latest version
+##### - update the package so you get the latest version
 <code>sudo apt update</code>
 ##### - install the compiler
 <code>sudo apt install build-essential
